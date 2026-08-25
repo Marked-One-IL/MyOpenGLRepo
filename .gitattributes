@@ -1,0 +1,2 @@
+# Don't track stats for those directories.
+/third_party/** linguist-vendored
