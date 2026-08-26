@@ -9,7 +9,7 @@ namespace Shaders
     class Compiled
     {
     public:
-        Compiled(const char *vertexShader, const char *fragmentShader, std::array<float, N> vertices);
+        Compiled(const char *vertexShader, const char *fragmentShader, std::array<float, N> vertices, GLenum shape);
         ~Compiled(void);
 
     private:
@@ -21,15 +21,15 @@ namespace Shaders
 }
 
 template <std::size_t N>
-inline Shaders::Compiled<N>::Compiled(const char *vertexShader, const char *fragmentShader, std::array<float, N> vertices) :
+inline Shaders::Compiled<N>::Compiled(const char *vertexShader, const char *fragmentShader, std::array<float, N> vertices, GLenum shape) :
     m_vertexShader(glCreateShader(GL_VERTEX_SHADER)), m_fragmentShader(glCreateShader(GL_FRAGMENT_SHADER)), m_vertices(vertices)
 {
     glGenBuffers(1, &this->m_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, this->m_VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->m_vertices.size(), this->m_vertices, GL_STATIC_DRAW);
 
-    int successStatus;
-    char infoLog[512];
+    int successStatus = 0;
+    char infoLog[512] = {'\0'};
 
     glShaderSource(this->m_vertexShader, 1, &vertexShader, nullptr);
     glCompileShader(this->m_vertexShader);
