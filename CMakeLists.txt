@@ -20,7 +20,6 @@ add_executable(${PROJECT_NAME} ${SOURCES} "${PROJECT_SOURCE_DIR}/third_party/gla
 
 # Add header search paths.
 target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include")
-target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/shaders")
 target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/third_party/glad/include")
 target_include_directories(${PROJECT_NAME} PRIVATE ${stb_SOURCE_DIR})
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glm::glm)
