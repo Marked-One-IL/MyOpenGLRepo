@@ -26,3 +26,4 @@ target_link_libraries(${PROJECT_NAME} PRIVATE glfw glm::glm)
 
 # Extra.
 target_compile_definitions(${PROJECT_NAME} PRIVATE PROJECT_ROOT="${PROJECT_SOURCE_DIR}")
+set_source_files_properties("${PROJECT_SOURCE_DIR}/src/main.cpp" PROPERTIES COMPILE_DEFINITIONS STB_IMAGE_IMPLEMENTATION)

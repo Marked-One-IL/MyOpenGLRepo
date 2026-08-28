@@ -22,13 +22,13 @@ int main()
         Shader shader("triangle.vs", "triangle.fs");
 
         float vertices[] = {
-            // Triangle 1        // color
-           -0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  // red
-            0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,  // green
-           -0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,  // blue
+            // Triangle 1
+           -0.5f, -0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
+           -0.5f,  0.5f, 0.0f,
 
             // Extra point.
-            0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  // red
+            0.5f,  0.5f, 0.0f,
         };
         // Reuse of the points instead of drawing 2 traingles.
         unsigned int indices[] = {
@@ -55,9 +55,7 @@ int main()
 
         // Shape config (How to interpret data).
         glEnableVertexAttribArray(0); // layout (location = 0)
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(1); // layout (location = 1)
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
         
         int count = 1;
         const int LIMIT = 120;
@@ -74,12 +72,15 @@ int main()
             shader.use();
             glBindVertexArray(VAO);
 
-            if (count < LIMIT) {
-                glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)0);
+            if (Window::getKey(GLFW_KEY_W) == GLFW_PRESS) {
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0); // Draw left+right triangles (square).
+            }
+            else if (count < LIMIT) {
+                glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)0); // Draw left triangle.
                 count++;
             } 
             else if (count < LIMIT * 2) {
-                glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)(3 * sizeof(unsigned int)));
+                glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)(3 * sizeof(unsigned int))); // Draw right triangle.
                 count++;
             }
             else {
