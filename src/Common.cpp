@@ -2,6 +2,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <format>
+#include <cstdlib>
 
 Common::RuntimeFailure::RuntimeFailure(const std::string &s) :
     std::runtime_error(s)
@@ -22,4 +23,12 @@ std::string Common::readFile(std::filesystem::path filePath)
     }
 
     return std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+}
+void Common::clearScreen(void)
+{
+#ifdef _WIN32
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
 }

@@ -1,31 +1,18 @@
 #include <iostream>
 #include <filesystem>
 #include <format>
-#include <cstdlib>
 #include <Window.hpp>
 #include <Shader.hpp>
 #include <Common.hpp>
-
-#include <stb_image.h>
 #include <glm/glm.hpp>
-
-// #define READY_TO_DISTRIBUTE
-
-void clearScreen(void)
-{
-#ifdef _WIN32
-    std::system("cls");
-#else
-    std::system("clear");
-#endif
-}
+#include <stb_image.h>
 
 int main()
 {
     try
     {
 #ifndef READY_TO_DISTRIBUTE
-        clearScreen();
+        Common::clearScreen();
         std::filesystem::current_path(PROJECT_ROOT);
 #endif
 
