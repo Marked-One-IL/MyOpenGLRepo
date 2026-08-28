@@ -19,7 +19,7 @@ int main()
 #endif
 
         Window::create(1000, 1000, "LearnOpenGL");
-        Shader shader("triangle.vs", "triangle.fs");
+        Shader shader("triangle.vert", "triangle.frag");
 
         float vertices[] = {
             // Triangle 1
@@ -72,7 +72,7 @@ int main()
             shader.use();
             glBindVertexArray(VAO);
 
-            if (Window::getKey(GLFW_KEY_W) == GLFW_PRESS) {
+            if (Window::getKey(GLFW_KEY_SPACE) == GLFW_PRESS) {
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0); // Draw left+right triangles (square).
             }
             else if (count < LIMIT) {
