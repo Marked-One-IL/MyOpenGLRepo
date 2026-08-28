@@ -1,20 +1,31 @@
 #include <iostream>
 #include <filesystem>
+#include <format>
+#include <cstdlib>
 #include <Window.hpp>
 #include <Shader.hpp>
 #include <Common.hpp>
-#include <format>
 
 #include <stb_image.h>
 #include <glm/glm.hpp>
 
 // #define READY_TO_DISTRIBUTE
 
+void clearScreen(void)
+{
+#ifdef _WIN32
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
+}
+
 int main()
 {
     try
     {
 #ifndef READY_TO_DISTRIBUTE
+        clearScreen();
         std::filesystem::current_path(PROJECT_ROOT);
 #endif
 
@@ -56,7 +67,7 @@ int main()
         // Shape config (How to interpret data).
         glEnableVertexAttribArray(0); // layout (location = 0)
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        
+
         int count = 1;
         const int LIMIT = 120;
         while (Window::isOpen())
