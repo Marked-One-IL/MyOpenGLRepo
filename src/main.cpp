@@ -2,6 +2,8 @@
 #include <filesystem>
 #include <Window.hpp>
 #include <Shader.hpp>
+#include <Common.hpp>
+#include <format>
 
 #include <stb_image.h>
 #include <glm/glm.hpp>
@@ -51,7 +53,7 @@ int main()
                 Window::close();
             }
 
-            glClearColor(0.66f, 0.66f, 0.66f, 1.0f);
+            glClearColor(0.16f, 0.16f, 0.16f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
             shader.use();

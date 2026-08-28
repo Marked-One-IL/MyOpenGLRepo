@@ -1,4 +1,5 @@
 #include <Window.hpp>
+#include <Common.hpp>
 #include <stdexcept>
 #include <cstdlib>
 #include <iostream>
@@ -13,7 +14,7 @@ void Window::create(int width, int height, const char *title)
     Window::g_height = height;
 
     if (!glfwInit()) {
-        throw std::runtime_error("Failed to initialize GLFW window");
+        throw Common::RuntimeFailure("Failed to initialize GLFW window");
     }
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -24,12 +25,12 @@ void Window::create(int width, int height, const char *title)
 
     Window::g_windowWrapper.window = glfwCreateWindow(Window::g_width, Window::g_height, title, nullptr, nullptr);
     if (nullptr == Window::g_windowWrapper.window) {
-        throw std::runtime_error("Failed to create GLFW window");
+        throw Common::RuntimeFailure("Failed to create GLFW window");
     }
     glfwMakeContextCurrent(Window::g_windowWrapper.window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        throw std::runtime_error("Failed to initialize GLAD");
+        throw Common::RuntimeFailure("Failed to initialize GLAD");
     }
 
     glViewport(0, 0, Window::g_height, Window::g_height);

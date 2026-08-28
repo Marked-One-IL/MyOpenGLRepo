@@ -9,14 +9,14 @@ Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath)
     unsigned int vertexShader = Shader::compileShader(vertexShaderPath, GL_VERTEX_SHADER);
     if (auto e = Shader::getShaderError(vertexShader, GL_VERTEX_SHADER, vertexShaderPath)) {
         glDeleteShader(vertexShader);
-        throw std::runtime_error(e.value());
+        throw Common::RuntimeFailure(e.value());
     }
 
     unsigned int fragmentShader = Shader::compileShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
     if (auto e = Shader::getShaderError(fragmentShader, GL_FRAGMENT_SHADER, fragmentShaderPath)) {
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
-        throw std::runtime_error(e.value());
+        throw Common::RuntimeFailure(e.value());
     }
 
     this->m_program = Shader::createProgram(vertexShader, fragmentShader);
@@ -26,7 +26,7 @@ Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath)
         glDeleteShader(fragmentShader);
         glDeleteProgram(this->m_program);
         this->m_program = 0;
-        throw std::runtime_error(e.value());
+        throw Common::RuntimeFailure(e.value());
     }
 
     glDeleteShader(vertexShader);
@@ -91,4 +91,11 @@ std::optional<std::string> Shader::getProgramError(unsigned int program, const c
     }
 
     return std::nullopt;
+}
+
+int Shader::getUniform(const char *name)
+{
+    int location = glGetUniformLocation(this->m_program, name);
+    LOGICAL_FAILURE(location != -1, "Could not get the location of uniform '{}'", name);
+    return location;
 }
