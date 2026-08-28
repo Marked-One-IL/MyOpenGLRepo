@@ -40,9 +40,9 @@ bool Window::isOpen(void)
 {
     return !glfwWindowShouldClose(Window::g_windowWrapper.window);
 }
-void Window::close(void)
+void Window::setClose(bool state)
 {
-    glfwSetWindowShouldClose(Window::g_windowWrapper.window, true);
+    glfwSetWindowShouldClose(Window::g_windowWrapper.window, state);
 }
 void Window::updateKeys(void)
 {

@@ -65,7 +65,7 @@ int main()
         {
             Window::updateKeys();
             if (Window::getKey(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-                Window::close();
+                Window::setClose(true);
             }
 
             glClearColor(0.16f, 0.16f, 0.16f, 1.0f);
