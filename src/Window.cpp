@@ -43,10 +43,13 @@ void Window::close(void)
 {
     glfwSetWindowShouldClose(Window::g_windowWrapper.window, true);
 }
-void Window::update(void)
+void Window::updateKeys(void)
+{
+    glfwPollEvents();
+}
+void Window::updateFrame(void)
 {
     glfwSwapBuffers(Window::g_windowWrapper.window);
-    glfwPollEvents();
 }
 int Window::getKey(int key)
 {

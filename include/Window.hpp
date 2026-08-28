@@ -8,7 +8,8 @@ public:
     static void create(int width, int height, const char *title);
     static bool isOpen(void);
     static void close(void);
-    static void update(void);
+    static void updateKeys(void);
+    static void updateFrame(void);
     static int getKey(int key);
     static int getWidth(void);
     static int getHeight(void);
