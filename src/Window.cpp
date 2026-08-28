@@ -29,7 +29,7 @@ void Window::create(int width, int height, const char *title)
     }
     glfwMakeContextCurrent(Window::g_windowWrapper.window);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
         throw Common::RuntimeFailure("Failed to initialize GLAD");
     }
 
@@ -40,9 +40,9 @@ bool Window::isOpen(void)
 {
     return !glfwWindowShouldClose(Window::g_windowWrapper.window);
 }
-void Window::setClose(bool state)
+void Window::close(void)
 {
-    glfwSetWindowShouldClose(Window::g_windowWrapper.window, state);
+    glfwSetWindowShouldClose(Window::g_windowWrapper.window, true);
 }
 void Window::updateKeys(void)
 {

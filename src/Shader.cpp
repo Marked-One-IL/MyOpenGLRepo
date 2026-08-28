@@ -43,6 +43,26 @@ void Shader::use(void)
 {
     glUseProgram(this->m_program);
 }
+void Shader::setUniformVec3(const char *name, glm::vec3 v)
+{
+    glUniform3f(this->getUniform(name), v.x, v.y, v.z);
+}
+void Shader::setUniformFloat(const char *name, float v)
+{
+    glUniform1f(this->getUniform(name), v);
+}
+void Shader::setUniformUint(const char *name, unsigned int v)
+{
+    glUniform1ui(this->getUniform(name), v);
+}
+void Shader::setUniformInt(const char *name, int v)
+{
+    glUniform1i(this->getUniform(name), v);
+}
+void Shader::setUniformBool(const char *name, bool v)
+{
+    glUniform1i(this->getUniform(name), static_cast<int>(v));
+}
 
 unsigned int Shader::compileShader(const char *shaderPath, GLenum mode)
 {

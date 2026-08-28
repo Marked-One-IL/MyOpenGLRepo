@@ -61,11 +61,20 @@ int main()
         {
             Window::updateKeys();
             if (Window::getKey(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-                Window::setClose(true);
+                Window::close();
             }
 
             glClearColor(0.16f, 0.16f, 0.16f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            float timeValue = glfwGetTime();
+            float colorValue = (std::sin(timeValue) / 2.0f) + 0.5f;
+            if (Window::getKey(GLFW_KEY_W) == GLFW_PRESS) {
+                shader.setUniformVec3("ourColor", glm::vec3(0.0f, colorValue, 0.0f));
+            }
+            else {
+                shader.setUniformVec3("ourColor", glm::vec3(colorValue, 0.0f, 0.0f));
+            }
 
             shader.use();
             glBindVertexArray(VAO);

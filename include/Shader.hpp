@@ -1,7 +1,10 @@
 #pragma once
 #include <string>
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 #include <optional>
+#include <map>
+#include <utility>
 
 class Shader
 {
@@ -10,6 +13,12 @@ public:
     ~Shader(void);
 
     void use(void);
+
+    void setUniformVec3(const char *name, glm::vec3 v);
+    void setUniformFloat(const char *name, float v);
+    void setUniformUint(const char *name, unsigned int v);
+    void setUniformInt(const char *name, int v);
+    void setUniformBool(const char *name, bool v);
 
 private:
     static unsigned int compileShader(const char *shaderPath, GLenum mode);

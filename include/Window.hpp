@@ -7,7 +7,7 @@ class Window
 public:
     static void create(int width, int height, const char *title);
     static bool isOpen(void);
-    static void setClose(bool state);
+    static void close(void);
     static void updateKeys(void);
     static void updateFrame(void);
     static int getKey(int key);
