@@ -21,13 +21,13 @@ public:
     void setUniformBool(const char *name, bool v);
 
 private:
-    static unsigned int compileShader(const char *shaderPath, GLenum mode);
-    static std::optional<std::string> getShaderError(unsigned int shader, GLenum mode, const char* shaderPath);
+    static GLuint compileShader(const char *shaderPath, GLenum mode);
+    static std::optional<std::string> getShaderError(GLuint shader, GLenum mode, const char* shaderPath);
 
-    static unsigned int createProgram(unsigned int vertexShader, unsigned int fragmentShader);
-    static std::optional<std::string> getProgramError(unsigned int program, const char *vertexShaderPath, const char *fragmentShaderPath);
+    static GLuint createProgram(GLuint vertexShader, GLuint fragmentShader);
+    static std::optional<std::string> getProgramError(GLuint program, const char *vertexShaderPath, const char *fragmentShaderPath);
 
-    int getUniform(const char *name);
+    GLint getUniform(const char *name);
 
-    unsigned int m_program = 0;
+    GLuint m_program = 0;
 };

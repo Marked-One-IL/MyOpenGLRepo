@@ -19,7 +19,7 @@ int main()
         Window::create(1000, 1000, "LearnOpenGL");
         Shader shader("triangle.vert", "triangle.frag");
 
-        float vertices[] = {
+        GLfloat vertices[] = {
             // Triangle 1
            -0.5f, -0.5f, 0.0f,
             0.5f, -0.5f, 0.0f,
@@ -29,31 +29,31 @@ int main()
             0.5f,  0.5f, 0.0f,
         };
         // Reuse of the points instead of drawing 2 traingles.
-        unsigned int indices[] = {
+        GLuint indices[] = {
             0, 1, 2,
             1, 3, 2
         };
 
         // Shape config.
-        unsigned int VAO = 0;
+        GLuint VAO = 0;
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
 
         // Shape buffer.
-        unsigned int VBO = 0;
+        GLuint VBO = 0;
         glGenBuffers(1, &VBO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
         
         // Shape points indices (Optional but this allows re-use of points).
-        unsigned int EBO = 0;
+        GLuint EBO = 0;
         glGenBuffers(1, &EBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
         // Shape config (How to interpret data).
         glEnableVertexAttribArray(0); // layout (location = 0)
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 
         int count = 1;
         const int LIMIT = 120;
@@ -87,7 +87,7 @@ int main()
                 count++;
             } 
             else if (count < LIMIT * 2) {
-                glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)(3 * sizeof(unsigned int))); // Draw right triangle.
+                glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)(3 * sizeof(GLuint))); // Draw right triangle.
                 count++;
             }
             else {

@@ -6,13 +6,13 @@
 
 Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath)
 {
-    unsigned int vertexShader = Shader::compileShader(vertexShaderPath, GL_VERTEX_SHADER);
+    GLuint vertexShader = Shader::compileShader(vertexShaderPath, GL_VERTEX_SHADER);
     if (auto e = Shader::getShaderError(vertexShader, GL_VERTEX_SHADER, vertexShaderPath)) {
         glDeleteShader(vertexShader);
         throw Common::RuntimeFailure(e.value());
     }
 
-    unsigned int fragmentShader = Shader::compileShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
+    GLuint fragmentShader = Shader::compileShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
     if (auto e = Shader::getShaderError(fragmentShader, GL_FRAGMENT_SHADER, fragmentShaderPath)) {
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
@@ -45,41 +45,41 @@ void Shader::use(void)
 }
 void Shader::setUniformVec3(const char *name, glm::vec3 v)
 {
-    glUniform3f(this->getUniform(name), v.x, v.y, v.z);
+    glUniform3f(this->getUniform(name), static_cast<GLfloat>(v.x), static_cast<GLfloat>(v.y), static_cast<GLfloat>(v.z));
 }
 void Shader::setUniformFloat(const char *name, float v)
 {
-    glUniform1f(this->getUniform(name), v);
+    glUniform1f(this->getUniform(name), static_cast<GLfloat>(v));
 }
 void Shader::setUniformUint(const char *name, unsigned int v)
 {
-    glUniform1ui(this->getUniform(name), v);
+    glUniform1ui(this->getUniform(name), static_cast<GLuint>(v));
 }
 void Shader::setUniformInt(const char *name, int v)
 {
-    glUniform1i(this->getUniform(name), v);
+    glUniform1i(this->getUniform(name), static_cast<GLint>(v));
 }
 void Shader::setUniformBool(const char *name, bool v)
 {
-    glUniform1i(this->getUniform(name), static_cast<int>(v));
+    glUniform1i(this->getUniform(name), static_cast<GLint>(v));
 }
 
-unsigned int Shader::compileShader(const char *shaderPath, GLenum mode)
+GLuint Shader::compileShader(const char *shaderPath, GLenum mode)
 {
     std::string shaderCode = Common::readFile(std::filesystem::path("assets") / "shaders" / shaderPath);
     const char *shaderCodeCstr = shaderCode.c_str();
-    unsigned int shader = glCreateShader(mode);
+    GLuint shader = glCreateShader(mode);
     glShaderSource(shader, 1, &shaderCodeCstr, nullptr);
     glCompileShader(shader);
     return shader;
 }
-std::optional<std::string> Shader::getShaderError(unsigned int shader, GLenum mode, const char* shaderPath)
+std::optional<std::string> Shader::getShaderError(GLuint shader, GLenum mode, const char* shaderPath)
 {
-    int success = 0;
+    GLint success = 0;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success)
     {
-        int logLength = 0;
+        GLint logLength = 0;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
         std::string error(static_cast<std::size_t>(logLength), '\0');
         glGetShaderInfoLog(shader, logLength, nullptr, &error[0]);
@@ -89,21 +89,21 @@ std::optional<std::string> Shader::getShaderError(unsigned int shader, GLenum mo
     return std::nullopt;
 }
 
-unsigned int Shader::createProgram(unsigned int vertexShader, unsigned int fragmentShader)
+GLuint Shader::createProgram(GLuint vertexShader, GLuint fragmentShader)
 {
-    unsigned int program = glCreateProgram();
+    GLuint program = glCreateProgram();
     glAttachShader(program, vertexShader);
     glAttachShader(program, fragmentShader);
     glLinkProgram(program);
     return program;
 }
-std::optional<std::string> Shader::getProgramError(unsigned int program, const char *vertexShaderPath, const char *fragmentShaderPath)
+std::optional<std::string> Shader::getProgramError(GLuint program, const char *vertexShaderPath, const char *fragmentShaderPath)
 {
-    int success = 0;
+    GLint success = 0;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success)
     {
-        int logLength = 0;
+        GLint logLength = 0;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
         std::string error(static_cast<std::size_t>(logLength), '\0');
         glGetProgramInfoLog(program, logLength, nullptr, &error[0]);
@@ -113,9 +113,9 @@ std::optional<std::string> Shader::getProgramError(unsigned int program, const c
     return std::nullopt;
 }
 
-int Shader::getUniform(const char *name)
+GLint Shader::getUniform(const char *name)
 {
-    int location = glGetUniformLocation(this->m_program, name);
+    GLint location = glGetUniformLocation(this->m_program, name);
     LOGICAL_FAILURE(location != -1, "Could not get the location of uniform '{}'", name);
     return location;
 }
