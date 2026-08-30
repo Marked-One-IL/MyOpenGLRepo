@@ -11,7 +11,7 @@ public:
     static void close();
     static void updateKeys();
     static void updateFrame();
-    static void fillScreen(glm::vec3 color);
+    static void fill(glm::vec3 color);
     static int getFps();
     static int getKey(int key);
 

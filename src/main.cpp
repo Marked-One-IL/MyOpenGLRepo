@@ -23,7 +23,7 @@ int main()
         while (Window::isOpen())
         {
             Window::updateKeys();
-            Window::fillScreen(glm::vec3(0.16f, 0.16f, 0.16f));
+            Window::fill(glm::vec3(0.16f, 0.16f, 0.16f));
 
             if (Window::getKey(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
                 Window::close();

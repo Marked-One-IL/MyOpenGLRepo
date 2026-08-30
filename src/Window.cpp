@@ -46,7 +46,7 @@ void Window::updateFrame()
 {
     glfwSwapBuffers(Window::g_globalDestructor.window);
 }
-void Window::fillScreen(glm::vec3 color)
+void Window::fill(glm::vec3 color)
 {
     glClearColor(static_cast<GLfloat>(color.x), static_cast<GLfloat>(color.y), static_cast<GLfloat>(color.z), static_cast<GLfloat>(1.0f));
     glClear(GL_COLOR_BUFFER_BIT);
