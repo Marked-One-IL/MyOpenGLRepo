@@ -23,7 +23,8 @@ int main()
         Texture texture2("image2.jpg");
 
         glm::vec2 pos (0.0f, 0.0f);
-        const float SPEED = 0.01f;
+        const float STEP = 0.01f;
+        const int fps = 0;
         while (Window::isOpen())
         {
             Window::updateKeys();
@@ -37,25 +38,27 @@ int main()
             texture2.use();
 
             if (Window::getKey(GLFW_KEY_W) == GLFW_PRESS) {
-                pos.y -= SPEED;
+                pos.y -= STEP;
             }
             if (Window::getKey(GLFW_KEY_S) == GLFW_PRESS) {
-                pos.y += SPEED;
+                pos.y += STEP;
             }
             if (Window::getKey(GLFW_KEY_A) == GLFW_PRESS) {
-                pos.x -= SPEED;
+                pos.x -= STEP;
             }
             if (Window::getKey(GLFW_KEY_D) == GLFW_PRESS) {
-                pos.x += SPEED;
+                pos.x += STEP;
             }
 
-            Shader& shader = Texture::getShader();
+            Shader &shader = Texture::getShader();
 
             shader.setUniformVec2("pos", glm::vec2(0.0f, 0.0f));
             texture2.use();
 
             shader.setUniformVec2("pos", pos);
             texture.use();
+
+            std::cout << Window::getFps() << '\n';
 
             Window::updateFrame();
         }

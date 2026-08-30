@@ -14,6 +14,8 @@ public:
     ~Shader();
 
     void construct(const char *vertexShaderPath, const char *fragmentShaderPath);
+    void destruct();
+    
     void use();
 
     void setUniformVec3(const char *name, glm::vec3 v);

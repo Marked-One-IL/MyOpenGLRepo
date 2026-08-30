@@ -6,9 +6,7 @@ Mesh::Mesh(const GLfloat *vertices, std::size_t verticesSize, const GLuint *indi
 }
 Mesh::~Mesh()
 {
-    glDeleteVertexArrays(1, &this->m_vao);
-    glDeleteBuffers(1, &this->m_vbo);
-    glDeleteBuffers(1, &this->m_ebo);
+    this->destruct();
 }
 
 void Mesh::construct(const GLfloat *vertices, std::size_t verticesSize, const GLuint *indices, std::size_t indicesSize)
@@ -24,6 +22,22 @@ void Mesh::construct(const GLfloat *vertices, std::size_t verticesSize, const GL
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizei>(indicesSize), indices, GL_STATIC_DRAW);
 }
+void Mesh::destruct()
+{
+    if (this->m_vao) {
+        glDeleteVertexArrays(1, &this->m_vao);
+        this->m_vao = 0;
+    }
+    if (this->m_vbo) {
+        glDeleteBuffers(1, &this->m_vbo);
+        this->m_vbo = 0;
+    }
+    if (this->m_ebo) {
+        glDeleteBuffers(1, &this->m_ebo);
+        this->m_ebo = 0;
+    }
+}
+
 void Mesh::setLocation(GLuint location, std::size_t singleElementCount, std::size_t offsetCount, std::size_t strideCount)
 {
     glBindVertexArray(this->m_vao);

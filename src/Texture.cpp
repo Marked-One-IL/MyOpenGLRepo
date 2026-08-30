@@ -9,6 +9,15 @@ Mesh Texture::g_mesh;
 
 Texture::Texture(const char *texturePath)
 {
+    this->construct(texturePath);
+}
+Texture::~Texture()
+{
+    this->destruct();
+}
+
+void Texture::construct(const char *texturePath)
+{
     int width = 0, height = 0, nrChannels = 0;
     std::string path = (std::filesystem::path("assets") / "textures" / texturePath).string();
     unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
@@ -18,15 +27,21 @@ Texture::Texture(const char *texturePath)
 
     glGenTextures(1, &this->m_texture);
     glBindTexture(GL_TEXTURE_2D, this->m_texture);
-
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
 }
-Texture::~Texture()
+void Texture::destruct()
 {
-    glDeleteTextures(1, &this->m_texture);
+    if (this->m_texture) {
+        glDeleteTextures(1, &this->m_texture);
+        this->m_texture = 0;
+    }
 }
 
 void Texture::use()
@@ -42,7 +57,7 @@ Shader& Texture::getShader()
     return Texture::g_shader;
 }
 
-void Texture::buildGlobalData()
+void Texture::constructGlobalData()
 {
     static GLfloat vertices[] = {
         // Position         // TexCoord
@@ -60,4 +75,9 @@ void Texture::buildGlobalData()
     Texture::g_mesh.construct(vertices, sizeof(vertices), indices, sizeof(indices));
     Texture::g_mesh.setLocation(0, 3, 0, 5);
     Texture::g_mesh.setLocation(1, 2, 3, 5);
+}
+void Texture::destructGlobalData()
+{
+    Texture::g_mesh.destruct();
+    Texture::g_shader.destruct();
 }

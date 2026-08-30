@@ -10,9 +10,7 @@ Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath)
 }
 Shader::~Shader()
 {
-    if (this->m_program) {
-        glDeleteProgram(this->m_program);
-    }
+    this->destruct();
 }
 
 void Shader::construct(const char *vertexShaderPath, const char *fragmentShaderPath)
@@ -42,7 +40,15 @@ void Shader::construct(const char *vertexShaderPath, const char *fragmentShaderP
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-} 
+}
+void Shader::destruct()
+{
+    if (this->m_program) {
+        glDeleteProgram(this->m_program);
+        this->m_program = 0;
+    }
+}
+
 void Shader::use()
 {
     glUseProgram(this->m_program);

@@ -10,6 +10,8 @@ public:
     ~Mesh();
 
     void construct(const GLfloat *vertices, std::size_t verticesSize, const GLuint *indices, std::size_t indicesSize);
+    void destruct();
+
     void setLocation(GLuint location, std::size_t singleElementCount, std::size_t offsetCount, std::size_t strideCount);
     void use(std::size_t offsetCount, std::size_t indicesCount);
 
