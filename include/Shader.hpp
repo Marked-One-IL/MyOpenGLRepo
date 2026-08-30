@@ -10,11 +10,14 @@ class Shader
 {
 public:
     Shader(const char *vertexShaderPath, const char *fragmentShaderPath);
-    ~Shader(void);
+    Shader() = default;
+    ~Shader();
 
-    void use(void);
+    void construct(const char *vertexShaderPath, const char *fragmentShaderPath);
+    void use();
 
     void setUniformVec3(const char *name, glm::vec3 v);
+    void setUniformVec2(const char *name, glm::vec2 v);
     void setUniformFloat(const char *name, float v);
     void setUniformUint(const char *name, unsigned int v);
     void setUniformInt(const char *name, int v);

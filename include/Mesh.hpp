@@ -6,9 +6,11 @@ class Mesh
 {
 public:
     Mesh(const GLfloat *vertices, std::size_t verticesSize, const GLuint *indices, std::size_t indicesSize);
-    ~Mesh(void);
+    Mesh() = default;
+    ~Mesh();
 
-    void setLocation(GLuint location, std::size_t elementCount, std::size_t offsetCount, std::size_t strideCount);
+    void construct(const GLfloat *vertices, std::size_t verticesSize, const GLuint *indices, std::size_t indicesSize);
+    void setLocation(GLuint location, std::size_t singleElementCount, std::size_t offsetCount, std::size_t strideCount);
     void use(std::size_t offsetCount, std::size_t indicesCount);
 
 private:

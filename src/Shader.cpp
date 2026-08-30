@@ -6,6 +6,17 @@
 
 Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath)
 {
+    this->construct(vertexShaderPath, fragmentShaderPath);
+}
+Shader::~Shader()
+{
+    if (this->m_program) {
+        glDeleteProgram(this->m_program);
+    }
+}
+
+void Shader::construct(const char *vertexShaderPath, const char *fragmentShaderPath)
+{
     GLuint vertexShader = Shader::compileShader(vertexShaderPath, GL_VERTEX_SHADER);
     if (auto e = Shader::getShaderError(vertexShader, GL_VERTEX_SHADER, vertexShaderPath)) {
         glDeleteShader(vertexShader);
@@ -31,21 +42,19 @@ Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath)
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-}
-Shader::~Shader(void)
-{
-    if (this->m_program) {
-        glDeleteProgram(this->m_program);
-    }
-}
-
-void Shader::use(void)
+} 
+void Shader::use()
 {
     glUseProgram(this->m_program);
 }
+
 void Shader::setUniformVec3(const char *name, glm::vec3 v)
 {
     glUniform3f(this->getUniform(name), static_cast<GLfloat>(v.x), static_cast<GLfloat>(v.y), static_cast<GLfloat>(v.z));
+}
+void Shader::setUniformVec2(const char *name, glm::vec2 v)
+{
+    glUniform2f(this->getUniform(name), static_cast<GLfloat>(v.x), static_cast<GLfloat>(v.y));
 }
 void Shader::setUniformFloat(const char *name, float v)
 {

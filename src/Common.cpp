@@ -24,7 +24,7 @@ std::string Common::readFile(std::filesystem::path filePath)
 
     return std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
 }
-void Common::clearScreen(void)
+void Common::clearScreen()
 {
 #ifdef _WIN32
     std::system("cls");

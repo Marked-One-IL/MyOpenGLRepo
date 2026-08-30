@@ -6,19 +6,19 @@ class Window
 {
 public:
     static void create(int width, int height, const char *title);
-    static bool isOpen(void);
-    static void close(void);
-    static void updateKeys(void);
-    static void updateFrame(void);
+    static bool isOpen();
+    static void close();
+    static void updateKeys();
+    static void updateFrame();
+    static int getWidth();
+    static int getHeight();
     static int getKey(int key);
-    static int getWidth(void);
-    static int getHeight(void);
 
 private:
     class WindowWrapper
     {
     public:
-        ~WindowWrapper(void);
+        ~WindowWrapper();
         GLFWwindow *window = nullptr;
     };
     static WindowWrapper g_windowWrapper;

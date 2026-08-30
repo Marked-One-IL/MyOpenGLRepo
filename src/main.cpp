@@ -4,6 +4,7 @@
 #include <Window.hpp>
 #include <Shader.hpp>
 #include <Mesh.hpp>
+#include <Texture.hpp>
 #include <Common.hpp>
 #include <glm/glm.hpp>
 #include <stb_image.h>
@@ -17,27 +18,12 @@ int main()
         std::filesystem::current_path(PROJECT_ROOT);
 #endif
 
-        GLfloat vertices[] = {
-            // Positions         // Color
-           -0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f, // Red
-            0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f, // Green
-           -0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f, // Blue
-            0.5f,  0.5f, 0.0f,   0.5f, 0.5f, 0.5f, // Some color I forgor
-        };
-        GLuint indices[] = {
-            0, 1, 2,
-            1, 3, 2
-        };
-
         Window::create(1000, 1000, "LearnOpenGL");
-        Shader shader("triangle.vert", "triangle.frag");
-        Mesh mesh(vertices, sizeof(vertices), indices, sizeof(indices));
+        Texture texture("image.png");
+        Texture texture2("image2.jpg");
 
-        mesh.setLocation(0, 3, 0, 6);
-        mesh.setLocation(1, 3, 3, 6);
-
-        int count = 1;
-        const int LIMIT = 120;
+        glm::vec2 pos (0.0f, 0.0f);
+        const float SPEED = 0.01f;
         while (Window::isOpen())
         {
             Window::updateKeys();
@@ -48,22 +34,28 @@ int main()
             glClearColor(0.16f, 0.16f, 0.16f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            shader.use();
+            texture2.use();
 
-            if (Window::getKey(GLFW_KEY_SPACE) == GLFW_PRESS) {
-                mesh.use(0, 6); // Draw left+right triangles (square).
+            if (Window::getKey(GLFW_KEY_W) == GLFW_PRESS) {
+                pos.y -= SPEED;
             }
-            else if (count < LIMIT) {
-                mesh.use(0, 3); // Draw left triangle.
-                count++;
-            } 
-            else if (count < LIMIT * 2) {
-                mesh.use(3, 3); // Draw right triangle.
-                count++;
+            if (Window::getKey(GLFW_KEY_S) == GLFW_PRESS) {
+                pos.y += SPEED;
             }
-            else {
-                count = 1;
+            if (Window::getKey(GLFW_KEY_A) == GLFW_PRESS) {
+                pos.x -= SPEED;
             }
+            if (Window::getKey(GLFW_KEY_D) == GLFW_PRESS) {
+                pos.x += SPEED;
+            }
+
+            Shader& shader = Texture::getShader();
+
+            shader.setUniformVec2("pos", glm::vec2(0.0f, 0.0f));
+            texture2.use();
+
+            shader.setUniformVec2("pos", pos);
+            texture.use();
 
             Window::updateFrame();
         }

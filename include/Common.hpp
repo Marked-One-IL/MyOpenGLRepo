@@ -37,7 +37,7 @@ namespace Common
     };
 
     std::string readFile(std::filesystem::path filePath);
-    void clearScreen(void);
+    void clearScreen();
 }
 
 template <typename... Args>
