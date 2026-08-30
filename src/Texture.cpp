@@ -45,13 +45,15 @@ void Texture::destruct()
     }
 }
 
-void Texture::draw(glm::vec2 position)
+void Texture::draw(glm::vec2 offset, float size, float degrees)
 {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->m_texture);
     Texture::g_shader.use();
-    Texture::g_shader.setUniformInt("textureUnit", 0);
-    Texture::g_shader.setUniformVec2("pos", position);
+    Texture::g_shader.setUniformInt("uTextureUnit", 0);
+    Texture::g_shader.setUniformVec2("uOffset", offset);
+    Texture::g_shader.setUniformFloat("uSize", size);
+    Texture::g_shader.setUniformFloat("uDegrees", degrees);
     Texture::g_mesh.use(0, 6);
 }
 
