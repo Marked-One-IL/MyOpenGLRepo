@@ -1,22 +1,11 @@
 #include <Window.hpp>
 #include <Common.hpp>
 #include <Texture.hpp>
-#include <filesystem>
-#include <stb_image.h>
-#include <stdexcept>
-#include <cstdlib>
-#include <iostream>
 
 Window::GlobalDestructor Window::g_globalDestructor;
 
 void Window::create(int width, int height, const char *title)
 {
-#ifndef READY_TO_DISTRIBUTE
-        Common::clearScreen();
-        std::filesystem::current_path(PROJECT_ROOT);
-#endif
-
-
     if (!glfwInit()) {
         throw Common::RuntimeFailure("Failed to initialize GLFW window");
     }
@@ -40,7 +29,6 @@ void Window::create(int width, int height, const char *title)
     glViewport(0, 0, width, height);
     glfwSetFramebufferSizeCallback(Window::g_globalDestructor.window, Window::window_resize_callback);
     Texture::constructGlobalData();
-    stbi_set_flip_vertically_on_load(true);
 }
 bool Window::isOpen()
 {

@@ -16,7 +16,7 @@ public:
     static int getKey(int key);
 
 private:
-    // All global objects must be deconstructed explicitly in this class.
+    // All global objects that are OpenGL related must be deconstructed explicitly in this class.
     // This ensures that global deconstructions are deterministic.
     struct GlobalDestructor
     {

@@ -36,8 +36,9 @@ namespace Common
         RuntimeFailure(const char *s);
     };
 
-    std::string readFile(std::filesystem::path filePath);
+    void setup();
     void clearScreen();
+    std::string readFile(std::filesystem::path filePath);
 }
 
 template <typename... Args>

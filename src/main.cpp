@@ -13,6 +13,7 @@ int main()
 {
     try
     {
+        Common::setup();
         Window::create(1000, 1000, "LearnOpenGL");
         Texture texture("image.png");
         Texture texture2("image2.jpg");
