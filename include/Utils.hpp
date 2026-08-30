@@ -7,7 +7,7 @@
 #include <cassert>
 
 // std::optional - Recoverable error but possible (Eg: socket closed).
-// Common::RuntimeFailure - Unrecoverable error but possible (Eg: shader file is not found).
+// Utils::RuntimeFailure - Unrecoverable error but possible (Eg: shader file is not found).
 // LOGICAL_FAILURE - Unrecoverable error but impossible (Eg: index >= v.size()).
 
 #ifndef NDEBUG
@@ -24,7 +24,7 @@ do { \
 do { } while (false)
 #endif
 
-namespace Common
+namespace Utils
 {
     class RuntimeFailure : public std::runtime_error
     {
@@ -36,13 +36,13 @@ namespace Common
         RuntimeFailure(const char *s);
     };
 
-    void setup();
+    void runtimeSetup();
     void clearScreen();
     std::string readFile(std::filesystem::path filePath);
 }
 
 template <typename... Args>
-inline Common::RuntimeFailure::RuntimeFailure(std::format_string<Args...> fmt, Args&&... args) :
+inline Utils::RuntimeFailure::RuntimeFailure(std::format_string<Args...> fmt, Args&&... args) :
     std::runtime_error(std::format(fmt, std::forward<Args>(args)...))
 {
 }

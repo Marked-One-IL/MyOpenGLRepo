@@ -5,7 +5,7 @@
 #include <Shader.hpp>
 #include <Mesh.hpp>
 #include <Texture.hpp>
-#include <Common.hpp>
+#include <Utils.hpp>
 #include <glm/glm.hpp>
 #include <stb_image.h>
 
@@ -13,7 +13,7 @@ int main()
 {
     try
     {
-        Common::setup();
+        Utils::runtimeSetup();
         Window::create(1000, 1000, "LearnOpenGL");
         Texture texture("image.png");
         Texture texture2("image2.jpg");

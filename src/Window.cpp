@@ -1,5 +1,5 @@
 #include <Window.hpp>
-#include <Common.hpp>
+#include <Utils.hpp>
 #include <Texture.hpp>
 
 Window::GlobalDestructor Window::g_globalDestructor;
@@ -7,7 +7,7 @@ Window::GlobalDestructor Window::g_globalDestructor;
 void Window::create(int width, int height, const char *title)
 {
     if (!glfwInit()) {
-        throw Common::RuntimeFailure("Failed to initialize GLFW window");
+        throw Utils::RuntimeFailure("Failed to initialize GLFW window");
     }
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -18,12 +18,12 @@ void Window::create(int width, int height, const char *title)
 
     Window::g_globalDestructor.window = glfwCreateWindow(width, height, title, nullptr, nullptr);
     if (nullptr == Window::g_globalDestructor.window) {
-        throw Common::RuntimeFailure("Failed to create GLFW window");
+        throw Utils::RuntimeFailure("Failed to create GLFW window");
     }
     glfwMakeContextCurrent(Window::g_globalDestructor.window);
 
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
-        throw Common::RuntimeFailure("Failed to initialize GLAD");
+        throw Utils::RuntimeFailure("Failed to initialize GLAD");
     }
 
     glViewport(0, 0, width, height);

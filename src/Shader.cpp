@@ -1,5 +1,5 @@
 #include <Shader.hpp>
-#include <Common.hpp>
+#include <Utils.hpp>
 #include <stdexcept>
 #include <filesystem>
 #include <format>
@@ -19,14 +19,14 @@ void Shader::construct(const char *vertexShaderPath, const char *fragmentShaderP
     GLuint vertexShader = Shader::compileShader(vertexShaderPath, GL_VERTEX_SHADER);
     if (auto e = Shader::getShaderError(vertexShader, GL_VERTEX_SHADER, vertexShaderPath)) {
         glDeleteShader(vertexShader);
-        throw Common::RuntimeFailure(e.value());
+        throw Utils::RuntimeFailure(e.value());
     }
 
     GLuint fragmentShader = Shader::compileShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
     if (auto e = Shader::getShaderError(fragmentShader, GL_FRAGMENT_SHADER, fragmentShaderPath)) {
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
-        throw Common::RuntimeFailure(e.value());
+        throw Utils::RuntimeFailure(e.value());
     }
 
     this->m_program = Shader::createProgram(vertexShader, fragmentShader);
@@ -36,7 +36,7 @@ void Shader::construct(const char *vertexShaderPath, const char *fragmentShaderP
         glDeleteShader(fragmentShader);
         glDeleteProgram(this->m_program);
         this->m_program = 0;
-        throw Common::RuntimeFailure(e.value());
+        throw Utils::RuntimeFailure(e.value());
     }
 
     glDeleteShader(vertexShader);
@@ -82,7 +82,7 @@ void Shader::setUniformBool(const char *name, bool v)
 
 GLuint Shader::compileShader(const char *shaderPath, GLenum mode)
 {
-    std::string shaderCode = Common::readFile(std::filesystem::path("assets") / "shaders" / shaderPath);
+    std::string shaderCode = Utils::readFile(std::filesystem::path("assets") / "shaders" / shaderPath);
     const char *shaderCodeCstr = shaderCode.c_str();
     GLuint shader = glCreateShader(mode);
     glShaderSource(shader, 1, &shaderCodeCstr, nullptr);

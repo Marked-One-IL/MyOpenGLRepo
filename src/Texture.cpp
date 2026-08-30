@@ -1,5 +1,5 @@
 #include <Texture.hpp>
-#include <Common.hpp>
+#include <Utils.hpp>
 #include <filesystem>
 #include <string>
 #include <stb_image.h>
@@ -23,7 +23,7 @@ void Texture::construct(const char *texturePath)
     std::string path = (std::filesystem::path("assets") / "textures" / texturePath).string();
     unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
     if (nullptr == data) {
-        throw Common::RuntimeFailure("Could not open image '{}'", path);
+        throw Utils::RuntimeFailure("Could not open image '{}'", path);
     }
 
     glGenTextures(1, &this->m_texture);
