@@ -66,8 +66,8 @@ int Window::getHeight()
 }
 int Window::getFps()
 {
-    static std::size_t count = 0;
-    static std::size_t fps = 0;
+    static int count = 0;
+    static int fps = 0;
     static double lastTime = 0.0; // Will be always have an integer like value for better results.
 
     if (glfwGetTime() - lastTime >= 1.0)

@@ -12,8 +12,8 @@ public:
     static void updateFrame();
     static int getWidth();
     static int getHeight();
-    static int getFps();
     static int getKey(int key);
+    static int getFps();
 
 private:
     // All global objects must be deconstructed explicitly in this class.
