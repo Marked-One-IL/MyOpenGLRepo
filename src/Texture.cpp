@@ -18,6 +18,7 @@ Texture::~Texture()
 
 void Texture::construct(const char *texturePath)
 {
+    this->destruct();
     int width = 0, height = 0, nrChannels = 0;
     std::string path = (std::filesystem::path("assets") / "textures" / texturePath).string();
     unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
@@ -44,17 +45,14 @@ void Texture::destruct()
     }
 }
 
-void Texture::use()
+void Texture::draw(glm::vec2 position)
 {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->m_texture);
-    Texture::g_shader.setUniformInt("textureUnit", 0);
     Texture::g_shader.use();
+    Texture::g_shader.setUniformInt("textureUnit", 0);
+    Texture::g_shader.setUniformVec2("pos", position);
     Texture::g_mesh.use(0, 6);
-}
-Shader& Texture::getShader()
-{
-    return Texture::g_shader;
 }
 
 void Texture::constructGlobalData()

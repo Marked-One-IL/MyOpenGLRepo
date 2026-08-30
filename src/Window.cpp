@@ -1,19 +1,21 @@
 #include <Window.hpp>
 #include <Common.hpp>
 #include <Texture.hpp>
+#include <filesystem>
 #include <stb_image.h>
 #include <stdexcept>
 #include <cstdlib>
 #include <iostream>
 
-int Window::g_width = 0;
-int Window::g_height = 0;
 Window::GlobalDestructor Window::g_globalDestructor;
 
 void Window::create(int width, int height, const char *title)
 {
-    Window::g_width = width;
-    Window::g_height = height;
+#ifndef READY_TO_DISTRIBUTE
+        Common::clearScreen();
+        std::filesystem::current_path(PROJECT_ROOT);
+#endif
+
 
     if (!glfwInit()) {
         throw Common::RuntimeFailure("Failed to initialize GLFW window");
@@ -25,7 +27,7 @@ void Window::create(int width, int height, const char *title)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    Window::g_globalDestructor.window = glfwCreateWindow(Window::g_width, Window::g_height, title, nullptr, nullptr);
+    Window::g_globalDestructor.window = glfwCreateWindow(width, height, title, nullptr, nullptr);
     if (nullptr == Window::g_globalDestructor.window) {
         throw Common::RuntimeFailure("Failed to create GLFW window");
     }
@@ -35,7 +37,7 @@ void Window::create(int width, int height, const char *title)
         throw Common::RuntimeFailure("Failed to initialize GLAD");
     }
 
-    glViewport(0, 0, Window::g_width, Window::g_height);
+    glViewport(0, 0, width, height);
     glfwSetFramebufferSizeCallback(Window::g_globalDestructor.window, Window::window_resize_callback);
     Texture::constructGlobalData();
     stbi_set_flip_vertically_on_load(true);
@@ -56,13 +58,10 @@ void Window::updateFrame()
 {
     glfwSwapBuffers(Window::g_globalDestructor.window);
 }
-int Window::getWidth()
+void Window::fillScreen(glm::vec3 color)
 {
-    return Window::g_width;
-}
-int Window::getHeight()
-{
-    return Window::g_height;
+    glClearColor(static_cast<GLfloat>(color.x), static_cast<GLfloat>(color.y), static_cast<GLfloat>(color.z), static_cast<GLfloat>(1.0f));
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 int Window::getFps()
 {
@@ -80,7 +79,6 @@ int Window::getFps()
 
     return fps;
 }
-
 int Window::getKey(int key)
 {
     return glfwGetKey(Window::g_globalDestructor.window, key);
@@ -96,7 +94,5 @@ Window::GlobalDestructor::~GlobalDestructor()
 }
 void Window::window_resize_callback(GLFWwindow *window, int width, int height)
 {
-    Window::g_width = width;
-    Window::g_height = height;
-    glViewport(0, 0, Window::g_width, Window::g_height);
+    glViewport(0, 0, width, height);
 }

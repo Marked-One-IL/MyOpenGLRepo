@@ -3,6 +3,7 @@
 #include <Mesh.hpp>
 #include <Window.hpp>
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 class Texture
 {
@@ -13,8 +14,7 @@ public:
     void construct(const char *texturePath);
     void destruct();
 
-    void use();
-    static Shader& getShader();
+    void draw(glm::vec2 position);
 
 private:
     static void constructGlobalData();

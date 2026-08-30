@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 class Window
 {
@@ -10,10 +11,9 @@ public:
     static void close();
     static void updateKeys();
     static void updateFrame();
-    static int getWidth();
-    static int getHeight();
-    static int getKey(int key);
+    static void fillScreen(glm::vec3 color);
     static int getFps();
+    static int getKey(int key);
 
 private:
     // All global objects must be deconstructed explicitly in this class.
@@ -26,6 +26,4 @@ private:
     static GlobalDestructor g_globalDestructor;
 
     static void window_resize_callback(GLFWwindow *window, int width, int height);
-    static int g_width;
-    static int g_height;
 };

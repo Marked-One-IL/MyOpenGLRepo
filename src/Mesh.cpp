@@ -11,6 +11,7 @@ Mesh::~Mesh()
 
 void Mesh::construct(const GLfloat *vertices, std::size_t verticesSize, const GLuint *indices, std::size_t indicesSize)
 {
+    this->destruct();
     glGenVertexArrays(1, &this->m_vao);
     glBindVertexArray(this->m_vao);
 

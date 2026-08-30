@@ -15,6 +15,7 @@ Shader::~Shader()
 
 void Shader::construct(const char *vertexShaderPath, const char *fragmentShaderPath)
 {
+    this->destruct();
     GLuint vertexShader = Shader::compileShader(vertexShaderPath, GL_VERTEX_SHADER);
     if (auto e = Shader::getShaderError(vertexShader, GL_VERTEX_SHADER, vertexShaderPath)) {
         glDeleteShader(vertexShader);
