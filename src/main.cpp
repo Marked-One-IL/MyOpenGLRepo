@@ -1,6 +1,7 @@
 #include <iostream>
 #include <filesystem>
 #include <format>
+#include <cmath>
 #include <Window.hpp>
 #include <Shader.hpp>
 #include <Mesh.hpp>
@@ -18,7 +19,7 @@ int main()
         Texture texture("image.png");
         Texture texture2("image2.jpg");
 
-        glm::vec2 offset (0.0f, 0.0f);
+        glm::vec2 offset;
         float size = 1.0f;
         float degrees = 0.0f;
 
@@ -35,10 +36,10 @@ int main()
             }
 
             if (Window::getKey(GLFW_KEY_W) == GLFW_PRESS) {
-                offset.y -= STEP;
+                offset.y += STEP;
             }
             if (Window::getKey(GLFW_KEY_S) == GLFW_PRESS) {
-                offset.y += STEP;
+                offset.y -= STEP;
             }
             if (Window::getKey(GLFW_KEY_A) == GLFW_PRESS) {
                 offset.x -= STEP;
@@ -58,19 +59,15 @@ int main()
             }
             if (Window::getKey(GLFW_KEY_LEFT) == GLFW_PRESS) {
                 degrees += DEGREES_INCREASE;
-                if (degrees >= 360.0f) {
-                    degrees -= 360.0f;
-                }        
+                degrees = std::fmod(degrees, 360.0f);
             }
             if (Window::getKey(GLFW_KEY_RIGHT) == GLFW_PRESS) {
                 degrees -= DEGREES_INCREASE;
-                if (degrees <= -360.0f) {
-                    degrees += 360.0f;
-                }  
+                degrees = std::fmod(degrees, 360.0f); 
             }
 
-            texture2.draw(glm::vec2(0.0f, 0.0f), 1.5f, 0.0f);
-            texture.draw(offset, size, degrees);
+            texture2.draw(glm::vec2(0.0f, 0.0f), glm::vec2(1.5f, 1.5f), 0.0f);
+            texture.draw(offset, glm::vec2(size, size), degrees);
 
             std::cout << degrees << '\n';
 

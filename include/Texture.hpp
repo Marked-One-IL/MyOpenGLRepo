@@ -14,7 +14,7 @@ public:
     void construct(const char *texturePath);
     void destruct();
 
-    void draw(glm::vec2 offset, float size, float degrees);
+    void draw(glm::vec2 offset, glm::vec2 size, float degrees);
 
 private:
     static void constructGlobalData();
