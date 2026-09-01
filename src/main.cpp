@@ -23,53 +23,55 @@ int main()
         float size = 1.0f;
         float degrees = 0.0f;
 
-        const float STEP = 0.01f;
-        const float SIZE_INCREASE = 0.01f;
-        const float DEGREES_INCREASE = 1.0f;
+        const float STEP = 0.02f;
+        const float SIZE_INCREASE = 0.02f;
+        const float DEGREES_INCREASE = 2.0f;
         while (Window::isOpen())
         {
             Window::updateKeys();
             Window::fill(glm::vec3(0.16f, 0.16f, 0.16f));
 
-            if (Window::getKey(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-                Window::close();
-            }
+            if (Window::canProcessLogic())
+            {
+                if (Window::getKey(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+                    Window::close();
+                }
 
-            if (Window::getKey(GLFW_KEY_W) == GLFW_PRESS) {
-                offset.y += STEP;
-            }
-            if (Window::getKey(GLFW_KEY_S) == GLFW_PRESS) {
-                offset.y -= STEP;
-            }
-            if (Window::getKey(GLFW_KEY_A) == GLFW_PRESS) {
-                offset.x -= STEP;
-            }
-            if (Window::getKey(GLFW_KEY_D) == GLFW_PRESS) {
-                offset.x += STEP;
-            }
+                if (Window::getKey(GLFW_KEY_W) == GLFW_PRESS) {
+                    offset.y += STEP;
+                }
+                if (Window::getKey(GLFW_KEY_S) == GLFW_PRESS) {
+                    offset.y -= STEP;
+                }
+                if (Window::getKey(GLFW_KEY_A) == GLFW_PRESS) {
+                    offset.x -= STEP;
+                }
+                if (Window::getKey(GLFW_KEY_D) == GLFW_PRESS) {
+                    offset.x += STEP;
+                }
 
-            if (Window::getKey(GLFW_KEY_UP) == GLFW_PRESS) {
-                size += SIZE_INCREASE;
-            }
-            if (Window::getKey(GLFW_KEY_DOWN) == GLFW_PRESS) {
-                size -= SIZE_INCREASE;
-                if (size <= 0.0f) {
-                    size = 0.0f;
+                if (Window::getKey(GLFW_KEY_UP) == GLFW_PRESS) {
+                    size += SIZE_INCREASE;
+                }
+                if (Window::getKey(GLFW_KEY_DOWN) == GLFW_PRESS) {
+                    size -= SIZE_INCREASE;
+                    if (size <= 0.0f) {
+                        size = 0.0f;
+                    }
+                }
+                if (Window::getKey(GLFW_KEY_LEFT) == GLFW_PRESS) {
+                    degrees += DEGREES_INCREASE;
+                    degrees = std::fmod(degrees, 360.0f);
+                }
+                if (Window::getKey(GLFW_KEY_RIGHT) == GLFW_PRESS) {
+                    degrees -= DEGREES_INCREASE;
+                    degrees = std::fmod(degrees, 360.0f); 
                 }
             }
-            if (Window::getKey(GLFW_KEY_LEFT) == GLFW_PRESS) {
-                degrees += DEGREES_INCREASE;
-                degrees = std::fmod(degrees, 360.0f);
-            }
-            if (Window::getKey(GLFW_KEY_RIGHT) == GLFW_PRESS) {
-                degrees -= DEGREES_INCREASE;
-                degrees = std::fmod(degrees, 360.0f); 
-            }
-
             texture2.draw(glm::vec2(0.0f, 0.0f), glm::vec2(1.5f, 1.5f), 0.0f);
             texture.draw(offset, glm::vec2(size, size), degrees);
 
-            std::cout << degrees << '\n';
+            std::cout << Window::getFps() << '\n';
 
             Window::updateFrame();
         }

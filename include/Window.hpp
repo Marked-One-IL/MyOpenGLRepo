@@ -14,6 +14,7 @@ public:
     static void fill(glm::vec3 color);
     static int getFps();
     static int getKey(int key);
+    static bool canProcessLogic();
 
 private:
     // All global objects that are OpenGL related must be deconstructed explicitly in this class.
@@ -21,9 +22,10 @@ private:
     struct GlobalDestructor
     {
         ~GlobalDestructor();
-        GLFWwindow *window = nullptr;
     };
     static GlobalDestructor g_globalDestructor;
+    static GLFWwindow *g_window;
 
     static void window_resize_callback(GLFWwindow *window, int width, int height);
+    friend class Window::GlobalDestructor;
 };

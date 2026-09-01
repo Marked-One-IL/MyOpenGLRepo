@@ -3,6 +3,7 @@
 #include <Texture.hpp>
 
 Window::GlobalDestructor Window::g_globalDestructor;
+GLFWwindow *Window::g_window = nullptr;
 
 void Window::create(int width, int height, const char *title)
 {
@@ -16,27 +17,28 @@ void Window::create(int width, int height, const char *title)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    Window::g_globalDestructor.window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-    if (nullptr == Window::g_globalDestructor.window) {
+    Window::g_window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+    if (nullptr == Window::g_window) {
         throw Utils::RuntimeFailure("Failed to create GLFW window");
     }
-    glfwMakeContextCurrent(Window::g_globalDestructor.window);
+    glfwMakeContextCurrent(Window::g_window);
+    glfwSwapInterval(0); // Disable v-sync.
 
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
         throw Utils::RuntimeFailure("Failed to initialize GLAD");
     }
 
     glViewport(0, 0, width, height);
-    glfwSetFramebufferSizeCallback(Window::g_globalDestructor.window, Window::window_resize_callback);
+    glfwSetFramebufferSizeCallback(Window::g_window, Window::window_resize_callback);
     Texture::constructGlobalData();
 }
 bool Window::isOpen()
 {
-    return !glfwWindowShouldClose(Window::g_globalDestructor.window);
+    return !glfwWindowShouldClose(Window::g_window);
 }
 void Window::close()
 {
-    glfwSetWindowShouldClose(Window::g_globalDestructor.window, true);
+    glfwSetWindowShouldClose(Window::g_window, true);
 }
 void Window::updateKeys()
 {
@@ -44,7 +46,7 @@ void Window::updateKeys()
 }
 void Window::updateFrame()
 {
-    glfwSwapBuffers(Window::g_globalDestructor.window);
+    glfwSwapBuffers(Window::g_window);
 }
 void Window::fill(glm::vec3 color)
 {
@@ -57,7 +59,8 @@ int Window::getFps()
     static int fps = 0;
     static double lastTime = 0.0; // Will be always have an integer like value for better results.
 
-    if (glfwGetTime() - lastTime >= 1.0)
+    double deltaTime = glfwGetTime() - lastTime;
+    if (deltaTime >= 1.0)
     {
         fps = count;
         count = 0;
@@ -69,14 +72,27 @@ int Window::getFps()
 }
 int Window::getKey(int key)
 {
-    return glfwGetKey(Window::g_globalDestructor.window, key);
+    return glfwGetKey(Window::g_window, key);
+}
+bool Window::canProcessLogic()
+{
+    constexpr double TICK = 1.0 / 60.0; // 60.0 is the simulated fps target.
+    static double lastTime = 0.0; // Will be always have an integer like value for better results.
+
+    double deltaTime = glfwGetTime() - lastTime;
+    if (deltaTime >= TICK) {
+        lastTime += TICK;
+        return true;
+    }
+    
+    return false;
 }
 
 Window::GlobalDestructor::~GlobalDestructor()
 {
     Texture::destructGlobalData();
-    if (this->window) {
-        glfwDestroyWindow(this->window);
+    if (Window::g_window) {
+        glfwDestroyWindow(Window::g_window);
     }
     glfwTerminate();
 }
