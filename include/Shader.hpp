@@ -3,7 +3,6 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <optional>
-#include <map>
 #include <utility>
 
 class Shader
