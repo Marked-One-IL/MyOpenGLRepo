@@ -19,7 +19,7 @@ int main()
         Texture texture("image.png");
         Texture texture2("image2.jpg");
 
-        glm::vec2 offset;
+        glm::vec2 offset (0.0f, 0.0f);
         float size = 1.0f;
         float degrees = 0.0f;
 
@@ -71,7 +71,7 @@ int main()
             texture2.draw(glm::vec2(0.0f, 0.0f), glm::vec2(1.5f, 1.5f), 0.0f);
             texture.draw(offset, glm::vec2(size, size), degrees);
 
-            //std::cout << Window::getFps() << '\n';
+            std::cout << Window::getFps() << '\n';
 
             Window::updateFrame();
         }

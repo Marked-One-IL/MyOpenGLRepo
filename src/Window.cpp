@@ -76,7 +76,7 @@ int Window::getKey(int key)
 }
 bool Window::canProcessLogic()
 {
-    constexpr double TICK = 1.0 / 60.0; // 60.0 is the simulated fps target.
+    constexpr double TICK = 1.0 / 144.0; // 144.0 is the simulated fps target.
     static double lastTime = 0.0; // Will be always have an integer like value for better results.
 
     double deltaTime = glfwGetTime() - lastTime;
