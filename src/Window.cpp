@@ -53,6 +53,20 @@ void Window::fill(glm::vec3 color)
     glClearColor(static_cast<GLfloat>(color.x), static_cast<GLfloat>(color.y), static_cast<GLfloat>(color.z), static_cast<GLfloat>(1.0f));
     glClear(GL_COLOR_BUFFER_BIT);
 }
+bool Window::canProcessLogic()
+{
+    constexpr double TICK = 1.0 / 144.0; // 144.0 is the simulated fps target.
+    static double lastTime = 0.0; // Will be always have an integer like value for better results.
+
+    double deltaTime = glfwGetTime() - lastTime;
+    if (deltaTime >= TICK) {
+        lastTime += TICK;
+        return true;
+    }
+    
+    return false;
+}
+
 int Window::getFps()
 {
     static int count = 0;
@@ -73,19 +87,6 @@ int Window::getFps()
 int Window::getKey(int key)
 {
     return glfwGetKey(Window::g_window, key);
-}
-bool Window::canProcessLogic()
-{
-    constexpr double TICK = 1.0 / 144.0; // 144.0 is the simulated fps target.
-    static double lastTime = 0.0; // Will be always have an integer like value for better results.
-
-    double deltaTime = glfwGetTime() - lastTime;
-    if (deltaTime >= TICK) {
-        lastTime += TICK;
-        return true;
-    }
-    
-    return false;
 }
 
 Window::GlobalDestructor::~GlobalDestructor()

@@ -1,9 +1,6 @@
 # CMake configurations.
 cmake_minimum_required(VERSION 3.20)
 project(MyOpenGLRepo LANGUAGES C CXX)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Fetch dependencies.
 include(FetchContent)
@@ -17,6 +14,7 @@ FetchContent_MakeAvailable(stb)
 # Create executable.
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*")
 add_executable(${PROJECT_NAME} ${SOURCES} "${PROJECT_SOURCE_DIR}/third_party/glad/src/glad.c" "${PROJECT_SOURCE_DIR}/third_party/stb/stb_image.c")
+target_compile_features(MyOpenGLRepo PRIVATE cxx_std_20)
 
 # Add header search paths.
 target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include")

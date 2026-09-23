@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <string>
 
 class Window
 {
@@ -12,9 +13,10 @@ public:
     static void updateKeys();
     static void updateFrame();
     static void fill(glm::vec3 color);
+    static bool canProcessLogic();
+
     static int getFps();
     static int getKey(int key);
-    static bool canProcessLogic();
 
 private:
     // All global objects that are OpenGL related must be deconstructed explicitly in this class.

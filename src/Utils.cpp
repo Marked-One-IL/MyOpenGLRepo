@@ -15,22 +15,6 @@ Utils::RuntimeFailure::RuntimeFailure(const char *s) :
 {
 }
 
-void Utils::runtimeSetup()
-{
-#ifndef READY_TO_DISTRIBUTE
-    //Utils::clearScreen();
-    std::filesystem::current_path(PROJECT_ROOT);
-#endif
-    stbi_set_flip_vertically_on_load(true);
-}
-void Utils::clearScreen()
-{
-#ifdef _WIN32
-    std::system("cls");
-#else
-    std::system("clear");
-#endif
-}
 std::string Utils::readFile(std::filesystem::path filePath)
 {
     std::string path = filePath.string();
@@ -41,4 +25,18 @@ std::string Utils::readFile(std::filesystem::path filePath)
     }
 
     return std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+}
+
+Utils::StaticRuntimeSetup Utils::g_staticRuntimeSetup;
+Utils::StaticRuntimeSetup::StaticRuntimeSetup(void)
+{
+#ifndef READY_TO_DISTRIBUTE
+#ifdef _WIN32
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
+    std::filesystem::current_path(PROJECT_ROOT);
+#endif
+    stbi_set_flip_vertically_on_load(true);
 }

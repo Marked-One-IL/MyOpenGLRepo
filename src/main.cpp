@@ -14,7 +14,6 @@ int main()
 {
     try
     {
-        Utils::runtimeSetup();
         Window::create(1000, 1000, "LearnOpenGL");
         Texture texture("image.png");
         Texture texture2("image2.jpg");
@@ -70,8 +69,6 @@ int main()
             }
             texture2.draw(glm::vec2(0.0f, 0.0f), glm::vec2(1.5f, 1.5f), 0.0f);
             texture.draw(offset, glm::vec2(size, size), degrees);
-
-            std::cout << Window::getFps() << '\n';
 
             Window::updateFrame();
         }

@@ -24,8 +24,11 @@ do { \
 do { } while (false)
 #endif
 
-namespace Utils
+class Utils
 {
+public:
+    Utils(void) = delete;
+
     class RuntimeFailure : public std::runtime_error
     {
     public:
@@ -36,10 +39,15 @@ namespace Utils
         RuntimeFailure(const char *s);
     };
 
-    void runtimeSetup();
-    void clearScreen();
-    std::string readFile(std::filesystem::path filePath);
-}
+    static std::string readFile(std::filesystem::path filePath);
+
+private:
+    struct StaticRuntimeSetup
+    {
+        StaticRuntimeSetup(void);
+    };
+    static Utils::StaticRuntimeSetup g_staticRuntimeSetup;
+};
 
 template <typename... Args>
 inline Utils::RuntimeFailure::RuntimeFailure(std::format_string<Args...> fmt, Args&&... args) :
