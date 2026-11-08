@@ -1,6 +1,6 @@
+#include <Utils.hpp>
 #include <Shader.hpp>
 #include <Utils.hpp>
-#include <stdexcept>
 #include <filesystem>
 #include <format>
 
@@ -11,6 +11,36 @@ Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath)
 Shader::~Shader()
 {
     this->destruct();
+}
+
+void Shader::use()
+{
+    glUseProgram(this->m_program);
+}
+
+void Shader::setUniformVec3(const char *name, glm::vec3 v)
+{
+    glUniform3f(this->getUniform(name), static_cast<GLfloat>(v.x), static_cast<GLfloat>(v.y), static_cast<GLfloat>(v.z));
+}
+void Shader::setUniformVec2(const char *name, glm::vec2 v)
+{
+    glUniform2f(this->getUniform(name), static_cast<GLfloat>(v.x), static_cast<GLfloat>(v.y));
+}
+void Shader::setUniformFloat(const char *name, float v)
+{
+    glUniform1f(this->getUniform(name), static_cast<GLfloat>(v));
+}
+void Shader::setUniformUint(const char *name, unsigned int v)
+{
+    glUniform1ui(this->getUniform(name), static_cast<GLuint>(v));
+}
+void Shader::setUniformInt(const char *name, int v)
+{
+    glUniform1i(this->getUniform(name), static_cast<GLint>(v));
+}
+void Shader::setUniformBool(const char *name, bool v)
+{
+    glUniform1i(this->getUniform(name), static_cast<GLint>(v));
 }
 
 void Shader::construct(const char *vertexShaderPath, const char *fragmentShaderPath)
@@ -48,36 +78,6 @@ void Shader::destruct()
         glDeleteProgram(this->m_program);
         this->m_program = 0;
     }
-}
-
-void Shader::use()
-{
-    glUseProgram(this->m_program);
-}
-
-void Shader::setUniformVec3(const char *name, glm::vec3 v)
-{
-    glUniform3f(this->getUniform(name), static_cast<GLfloat>(v.x), static_cast<GLfloat>(v.y), static_cast<GLfloat>(v.z));
-}
-void Shader::setUniformVec2(const char *name, glm::vec2 v)
-{
-    glUniform2f(this->getUniform(name), static_cast<GLfloat>(v.x), static_cast<GLfloat>(v.y));
-}
-void Shader::setUniformFloat(const char *name, float v)
-{
-    glUniform1f(this->getUniform(name), static_cast<GLfloat>(v));
-}
-void Shader::setUniformUint(const char *name, unsigned int v)
-{
-    glUniform1ui(this->getUniform(name), static_cast<GLuint>(v));
-}
-void Shader::setUniformInt(const char *name, int v)
-{
-    glUniform1i(this->getUniform(name), static_cast<GLint>(v));
-}
-void Shader::setUniformBool(const char *name, bool v)
-{
-    glUniform1i(this->getUniform(name), static_cast<GLint>(v));
 }
 
 GLuint Shader::compileShader(const char *shaderPath, GLenum mode)

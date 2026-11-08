@@ -1,33 +1,35 @@
 #pragma once
-#include <iostream>
 #include <format>
 #include <string>
 #include <filesystem>
 #include <stdexcept>
 #include <cassert>
 
-// std::optional - Recoverable error but possible (Eg: socket closed).
-// Utils::RuntimeFailure - Unrecoverable error but possible (Eg: shader file is not found).
-// LOGICAL_FAILURE - Unrecoverable error but impossible (Eg: index >= v.size()).
+// std::optional         - Recoverable error but possible.
+// LOGICAL_FAILURE       - Unrecoverable error and impossible.
+// Utils::RuntimeFailure - Unrecoverable error but possible.
 
 #ifndef NDEBUG
-#define LOGICAL_FAILURE(expression, ...) \
-do { \
-    if (!(expression)) { \
-        std::cerr << "\nExpression: " << #expression << '\n'; \
-        std::cerr << "Message: " << std::format(__VA_ARGS__) << '\n'; \
-        assert(false); \
-    } \
-} while (false)
+    #include <iostream>
+    #define LOGICAL_FAILURE(expression, ...) \
+    do { \
+        if (!(expression)) { \
+            std::cerr << "\nExpression: " << #expression              << '\n'; \
+            std::cerr << "Message: "      << std::format(__VA_ARGS__) << '\n'; \
+            assert(false); \
+        } \
+    } while (false)
 #else
-#define LOGICAL_FAILURE(expression, ...) \
-do { } while (false)
+    #define LOGICAL_FAILURE(expression, ...) \
+    do { } while (false)
 #endif
 
 class Utils
 {
 public:
     Utils(void) = delete;
+
+    static void initializeRuntime (void);
 
     class RuntimeFailure : public std::runtime_error
     {
@@ -40,13 +42,6 @@ public:
     };
 
     static std::string readFile(std::filesystem::path filePath);
-
-private:
-    struct StaticRuntimeSetup
-    {
-        StaticRuntimeSetup(void);
-    };
-    static Utils::StaticRuntimeSetup g_staticRuntimeSetup;
 };
 
 template <typename... Args>

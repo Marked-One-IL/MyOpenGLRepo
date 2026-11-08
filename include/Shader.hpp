@@ -3,7 +3,8 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <optional>
-#include <utility>
+
+class Texture;
 
 class Shader
 {
@@ -12,9 +13,6 @@ public:
     Shader() = default;
     ~Shader();
 
-    void construct(const char *vertexShaderPath, const char *fragmentShaderPath);
-    void destruct();
-    
     void use();
 
     void setUniformVec3(const char *name, glm::vec3 v);
@@ -25,6 +23,9 @@ public:
     void setUniformBool(const char *name, bool v);
 
 private:
+    void construct(const char *vertexShaderPath, const char *fragmentShaderPath);
+    void destruct();
+
     static GLuint compileShader(const char *shaderPath, GLenum mode);
     static std::optional<std::string> getShaderError(GLuint shader, GLenum mode, const char* shaderPath);
 
@@ -34,4 +35,6 @@ private:
     GLint getUniform(const char *name);
 
     GLuint m_program = 0;
+
+    friend class Texture;
 };

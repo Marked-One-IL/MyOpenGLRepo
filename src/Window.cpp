@@ -2,11 +2,12 @@
 #include <Utils.hpp>
 #include <Texture.hpp>
 
-Window::GlobalDestructor Window::g_globalDestructor;
 GLFWwindow *Window::g_window = nullptr;
 
 void Window::create(int width, int height, const char *title)
 {
+    Window::destroy();
+
     if (!glfwInit()) {
         throw Utils::RuntimeFailure("Failed to initialize GLFW window");
     }
@@ -32,28 +33,33 @@ void Window::create(int width, int height, const char *title)
     glfwSetFramebufferSizeCallback(Window::g_window, Window::window_resize_callback);
     Texture::constructGlobalData();
 }
-bool Window::isOpen()
+void Window::destroy(void)
+{
+    Texture::destructGlobalData();
+    if (Window::g_window) {
+        glfwDestroyWindow(Window::g_window);
+        Window::g_window = nullptr;
+    }
+    glfwTerminate();
+}
+
+bool Window::isOpen(void)
 {
     return !glfwWindowShouldClose(Window::g_window);
 }
-void Window::close()
+void Window::close(void)
 {
     glfwSetWindowShouldClose(Window::g_window, true);
 }
-void Window::updateKeys()
+void Window::updateKeys(void)
 {
     glfwPollEvents();
 }
-void Window::updateFrame()
+void Window::updateFrame(void)
 {
     glfwSwapBuffers(Window::g_window);
 }
-void Window::fill(glm::vec3 color)
-{
-    glClearColor(static_cast<GLfloat>(color.x), static_cast<GLfloat>(color.y), static_cast<GLfloat>(color.z), static_cast<GLfloat>(1.0f));
-    glClear(GL_COLOR_BUFFER_BIT);
-}
-bool Window::canProcessLogic()
+bool Window::canProcessLogic(void)
 {
     constexpr double TICK = 1.0 / 144.0; // 144.0 is the simulated fps target.
     static double lastTime = 0.0; // Will be always have an integer like value for better results.
@@ -63,11 +69,10 @@ bool Window::canProcessLogic()
         lastTime += TICK;
         return true;
     }
-    
+
     return false;
 }
-
-int Window::getFps()
+int Window::getFps(void)
 {
     static int count = 0;
     static int fps = 0;
@@ -88,15 +93,12 @@ int Window::getKey(int key)
 {
     return glfwGetKey(Window::g_window, key);
 }
-
-Window::GlobalDestructor::~GlobalDestructor()
+void Window::fill(glm::vec3 color)
 {
-    Texture::destructGlobalData();
-    if (Window::g_window) {
-        glfwDestroyWindow(Window::g_window);
-    }
-    glfwTerminate();
+    glClearColor(static_cast<GLfloat>(color.x), static_cast<GLfloat>(color.y), static_cast<GLfloat>(color.z), static_cast<GLfloat>(1.0f));
+    glClear(GL_COLOR_BUFFER_BIT);
 }
+
 void Window::window_resize_callback(GLFWwindow *window, int width, int height)
 {
     glViewport(0, 0, width, height);

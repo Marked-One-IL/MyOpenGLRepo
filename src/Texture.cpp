@@ -16,6 +16,18 @@ Texture::~Texture()
     this->destruct();
 }
 
+void Texture::draw(glm::vec2 offset, glm::vec2 size, float degrees)
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->m_texture);
+    Texture::g_shader.use();
+    Texture::g_shader.setUniformInt("uTextureUnit", 0);
+    Texture::g_shader.setUniformVec2("uOffset", offset);
+    Texture::g_shader.setUniformVec2("uSize", size);
+    Texture::g_shader.setUniformFloat("uDegrees", degrees);
+    Texture::g_mesh.use(0, 6);
+}
+
 void Texture::construct(const char *texturePath)
 {
     this->destruct();
@@ -43,18 +55,6 @@ void Texture::destruct()
         glDeleteTextures(1, &this->m_texture);
         this->m_texture = 0;
     }
-}
-
-void Texture::draw(glm::vec2 offset, glm::vec2 size, float degrees)
-{
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, this->m_texture);
-    Texture::g_shader.use();
-    Texture::g_shader.setUniformInt("uTextureUnit", 0);
-    Texture::g_shader.setUniformVec2("uOffset", offset);
-    Texture::g_shader.setUniformVec2("uSize", size);
-    Texture::g_shader.setUniformFloat("uDegrees", degrees);
-    Texture::g_mesh.use(0, 6);
 }
 
 void Texture::constructGlobalData()

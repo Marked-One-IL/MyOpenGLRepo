@@ -12,9 +12,11 @@
 !/src/
 !/third_party/
 !/assets/
+!/.zed/
 
 # Keep the contents of those directories.
 !/include/**
 !/src/**
 !/third_party/**
 !/assets/**
+!/.zed/**

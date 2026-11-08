@@ -1,7 +1,7 @@
 #pragma once
+#include <Window.hpp>
 #include <Shader.hpp>
 #include <Mesh.hpp>
-#include <Window.hpp>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
@@ -11,12 +11,12 @@ public:
     Texture(const char *texturePath);
     ~Texture();
 
-    void construct(const char *texturePath);
-    void destruct();
-
     void draw(glm::vec2 offset, glm::vec2 size, float degrees);
 
 private:
+    void construct(const char *texturePath);
+    void destruct();
+
     static void constructGlobalData();
     static void destructGlobalData();
 
