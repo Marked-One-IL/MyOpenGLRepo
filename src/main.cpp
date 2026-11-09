@@ -13,7 +13,7 @@ int main()
     try
     {
         Utils::initializeRuntime();
-        Window::create(1000, 1000, "LearnOpenGL");
+        Window::construct(1000, 1000, "LearnOpenGL");
         Texture texture("image.png");
         Texture texture2("image2.jpg");
 
@@ -31,37 +31,37 @@ int main()
 
             if (Window::canProcessLogic())
             {
-                if (Window::getKey(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+                if (Window::isKeyPressed(GLFW_KEY_ESCAPE)) {
                     Window::close();
                 }
 
-                if (Window::getKey(GLFW_KEY_W) == GLFW_PRESS) {
+                if (Window::isKeyPressed(GLFW_KEY_W)) {
                     offset.y += STEP;
                 }
-                if (Window::getKey(GLFW_KEY_S) == GLFW_PRESS) {
+                if (Window::isKeyPressed(GLFW_KEY_S)) {
                     offset.y -= STEP;
                 }
-                if (Window::getKey(GLFW_KEY_A) == GLFW_PRESS) {
+                if (Window::isKeyPressed(GLFW_KEY_A)) {
                     offset.x -= STEP;
                 }
-                if (Window::getKey(GLFW_KEY_D) == GLFW_PRESS) {
+                if (Window::isKeyPressed(GLFW_KEY_D)) {
                     offset.x += STEP;
                 }
 
-                if (Window::getKey(GLFW_KEY_UP) == GLFW_PRESS) {
+                if (Window::isKeyPressed(GLFW_KEY_UP)) {
                     size += SIZE_INCREASE;
                 }
-                if (Window::getKey(GLFW_KEY_DOWN) == GLFW_PRESS) {
+                if (Window::isKeyPressed(GLFW_KEY_DOWN)) {
                     size -= SIZE_INCREASE;
                     if (size <= 0.0f) {
                         size = 0.0f;
                     }
                 }
-                if (Window::getKey(GLFW_KEY_LEFT) == GLFW_PRESS) {
+                if (Window::isKeyPressed(GLFW_KEY_LEFT)) {
                     degrees += DEGREES_INCREASE;
                     degrees = std::fmod(degrees, 360.0f);
                 }
-                if (Window::getKey(GLFW_KEY_RIGHT) == GLFW_PRESS) {
+                if (Window::isKeyPressed(GLFW_KEY_RIGHT)) {
                     degrees -= DEGREES_INCREASE;
                     degrees = std::fmod(degrees, 360.0f);
                 }
@@ -69,6 +69,7 @@ int main()
             texture2.draw(glm::vec2(0.0f, 0.0f), glm::vec2(1.5f, 1.5f), 0.0f);
             texture.draw(offset, glm::vec2(size, size), degrees);
 
+            Window::setTitle("fps: {}", Window::getFps());
             Window::updateFrame();
         }
     }
@@ -77,6 +78,6 @@ int main()
         std::cout << e.what();
     }
 
-    Window::destroy();
+    Window::destruct();
     return 0;
 }

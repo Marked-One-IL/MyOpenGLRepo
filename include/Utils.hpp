@@ -5,24 +5,9 @@
 #include <stdexcept>
 #include <cassert>
 
-// std::optional         - Recoverable error but possible.
-// LOGICAL_FAILURE       - Unrecoverable error and impossible.
-// Utils::RuntimeFailure - Unrecoverable error but possible.
-
-#ifndef NDEBUG
-    #include <iostream>
-    #define LOGICAL_FAILURE(expression, ...) \
-    do { \
-        if (!(expression)) { \
-            std::cerr << "\nExpression: " << #expression              << '\n'; \
-            std::cerr << "Message: "      << std::format(__VA_ARGS__) << '\n'; \
-            assert(false); \
-        } \
-    } while (false)
-#else
-    #define LOGICAL_FAILURE(expression, ...) \
-    do { } while (false)
-#endif
+// std::optional         - Recoverable and possible error.
+// Utils::RuntimeFailure - Unrecoverable but possible error.
+// assert                - Unrecoverable and impossible error.
 
 class Utils
 {

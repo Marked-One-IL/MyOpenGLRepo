@@ -4,9 +4,9 @@
 
 GLFWwindow *Window::g_window = nullptr;
 
-void Window::create(int width, int height, const char *title)
+void Window::construct(int width, int height, const char *title)
 {
-    Window::destroy();
+    Window::destruct();
 
     if (!glfwInit()) {
         throw Utils::RuntimeFailure("Failed to initialize GLFW window");
@@ -33,7 +33,7 @@ void Window::create(int width, int height, const char *title)
     glfwSetFramebufferSizeCallback(Window::g_window, Window::window_resize_callback);
     Texture::constructGlobalData();
 }
-void Window::destroy(void)
+void Window::destruct(void)
 {
     Texture::destructGlobalData();
     if (Window::g_window) {
@@ -89,14 +89,18 @@ int Window::getFps(void)
 
     return fps;
 }
-int Window::getKey(int key)
+bool Window::isKeyPressed(int key)
 {
-    return glfwGetKey(Window::g_window, key);
+    return glfwGetKey(Window::g_window, key) == GLFW_PRESS;
 }
 void Window::fill(glm::vec3 color)
 {
     glClearColor(static_cast<GLfloat>(color.x), static_cast<GLfloat>(color.y), static_cast<GLfloat>(color.z), static_cast<GLfloat>(1.0f));
     glClear(GL_COLOR_BUFFER_BIT);
+}
+void Window::setTitle(const char *title)
+{
+    glfwSetWindowTitle(Window::g_window, title);
 }
 
 void Window::window_resize_callback(GLFWwindow *window, int width, int height)

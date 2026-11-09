@@ -3,6 +3,7 @@
 #include <Utils.hpp>
 #include <filesystem>
 #include <format>
+#include <cassert>
 
 Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath)
 {
@@ -13,7 +14,7 @@ Shader::~Shader()
     this->destruct();
 }
 
-void Shader::use()
+void Shader::use(void)
 {
     glUseProgram(this->m_program);
 }
@@ -72,7 +73,7 @@ void Shader::construct(const char *vertexShaderPath, const char *fragmentShaderP
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }
-void Shader::destruct()
+void Shader::destruct(void)
 {
     if (this->m_program) {
         glDeleteProgram(this->m_program);
@@ -132,6 +133,5 @@ std::optional<std::string> Shader::getProgramError(GLuint program, const char *v
 GLint Shader::getUniform(const char *name)
 {
     GLint location = glGetUniformLocation(this->m_program, name);
-    LOGICAL_FAILURE(location != -1, "Could not get the location of uniform '{}'", name);
     return location;
 }

@@ -9,30 +9,30 @@ class Texture;
 class Shader
 {
 public:
-    Shader(const char *vertexShaderPath, const char *fragmentShaderPath);
-    Shader() = default;
-    ~Shader();
+    Shader  (const char *vertexShaderPath, const char *fragmentShaderPath);
+    Shader  (void) = default;
+    ~Shader (void);
 
-    void use();
+    void use (void);
 
-    void setUniformVec3(const char *name, glm::vec3 v);
-    void setUniformVec2(const char *name, glm::vec2 v);
-    void setUniformFloat(const char *name, float v);
-    void setUniformUint(const char *name, unsigned int v);
-    void setUniformInt(const char *name, int v);
-    void setUniformBool(const char *name, bool v);
+    void setUniformVec3  (const char *name, glm::vec3 v);
+    void setUniformVec2  (const char *name, glm::vec2 v);
+    void setUniformFloat (const char *name, float v);
+    void setUniformUint  (const char *name, unsigned int v);
+    void setUniformInt   (const char *name, int v);
+    void setUniformBool  (const char *name, bool v);
 
 private:
-    void construct(const char *vertexShaderPath, const char *fragmentShaderPath);
-    void destruct();
+    void construct (const char *vertexShaderPath, const char *fragmentShaderPath);
+    void destruct  (void);
 
-    static GLuint compileShader(const char *shaderPath, GLenum mode);
-    static std::optional<std::string> getShaderError(GLuint shader, GLenum mode, const char* shaderPath);
+    static GLuint compileShader                      (const char *shaderPath, GLenum mode);
+    static std::optional<std::string> getShaderError (GLuint shader, GLenum mode, const char* shaderPath);
 
-    static GLuint createProgram(GLuint vertexShader, GLuint fragmentShader);
-    static std::optional<std::string> getProgramError(GLuint program, const char *vertexShaderPath, const char *fragmentShaderPath);
+    static GLuint createProgram                       (GLuint vertexShader, GLuint fragmentShader);
+    static std::optional<std::string> getProgramError (GLuint program, const char *vertexShaderPath, const char *fragmentShaderPath);
 
-    GLint getUniform(const char *name);
+    GLint getUniform (const char *name);
 
     GLuint m_program = 0;
 

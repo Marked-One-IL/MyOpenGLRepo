@@ -11,7 +11,7 @@ Texture::Texture(const char *texturePath)
 {
     this->construct(texturePath);
 }
-Texture::~Texture()
+Texture::~Texture(void)
 {
     this->destruct();
 }
@@ -49,7 +49,7 @@ void Texture::construct(const char *texturePath)
 
     stbi_image_free(data);
 }
-void Texture::destruct()
+void Texture::destruct(void)
 {
     if (this->m_texture) {
         glDeleteTextures(1, &this->m_texture);
@@ -57,7 +57,7 @@ void Texture::destruct()
     }
 }
 
-void Texture::constructGlobalData()
+void Texture::constructGlobalData(void)
 {
     static GLfloat vertices[] = {
         // Position         // TexCoord
@@ -76,7 +76,7 @@ void Texture::constructGlobalData()
     Texture::g_mesh.setLocation(0, 3, 0, 5);
     Texture::g_mesh.setLocation(1, 2, 3, 5);
 }
-void Texture::destructGlobalData()
+void Texture::destructGlobalData(void)
 {
     Texture::g_mesh.destruct();
     Texture::g_shader.destruct();

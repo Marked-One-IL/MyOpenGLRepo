@@ -4,7 +4,7 @@ Mesh::Mesh(const GLfloat *vertices, std::size_t verticesSize, const GLuint *indi
 {
     this->construct(vertices, verticesSize, indices, indicesSize);
 }
-Mesh::~Mesh()
+Mesh::~Mesh(void)
 {
     this->destruct();
 }
@@ -38,7 +38,7 @@ void Mesh::construct(const GLfloat *vertices, std::size_t verticesSize, const GL
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizei>(indicesSize), indices, GL_STATIC_DRAW);
 }
-void Mesh::destruct()
+void Mesh::destruct(void)
 {
     if (this->m_vao) {
         glDeleteVertexArrays(1, &this->m_vao);

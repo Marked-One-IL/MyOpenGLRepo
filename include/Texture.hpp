@@ -8,20 +8,21 @@
 class Texture
 {
 public:
-    Texture(const char *texturePath);
-    ~Texture();
+    Texture  (const char *texturePath);
+    ~Texture (void);
 
-    void draw(glm::vec2 offset, glm::vec2 size, float degrees);
+    void draw (glm::vec2 offset, glm::vec2 size, float degrees);
 
 private:
-    void construct(const char *texturePath);
-    void destruct();
+    void construct (const char *texturePath);
+    void destruct  (void);
 
-    static void constructGlobalData();
-    static void destructGlobalData();
+    static void constructGlobalData (void);
+    static void destructGlobalData  (void);
 
     static Shader g_shader;
     static Mesh g_mesh;
+
     GLuint m_texture = 0;
 
     friend class Window; // Construct and destruct global data.
